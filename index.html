@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#009578">
+        <title>Home</title>
+        <link rel="stylesheet" href="main.css">
+        <link rel="manifest" href="manifest.json">
+        <link rel="apple-touch-icon" href="images/test_icon.png">
+    </head>
+    <body>
+        <!--<script src="index.js"></script>-->
+        <nav class="navbar">
+            <ul class="navbar-list">
+                <li class="navbar-item">
+                    <a class="navbar-link" href="index.html">Home</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="game.html">Mathe</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="">IT</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="">Allgemein</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="navbar-link" href="">Anderes</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <h1 class="heading">Jacob's Lernapp</h1>
+            <div class="menu">
+                <a id="math" class="card" onclick="getIdFromUrl(this.id);">
+                    <img src="images/math.jpg" alt="Mathe"/>
+                    <p>Mathematik</p>
+                </a>
+                <a>
+                    <div class="card">
+                        <img src="images/it.jpg" alt="Internettechnologien"/>
+                        <p>Internettechnologien</p>
+                    </div>
+                </a>
+                <a>
+                    <div class="card">
+                        <img src="images/knowledge.jpg" alt="Allgemeinwissen"/>
+                        <p>Allgemeinwissen</p>
+                    </div>
+                </a>
+                <a>
+                    <div class="card">
+                        <img src="images/basic.jpg" alt="Anderes"/>
+                        <p>Anderes</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2023 Jacob Flaskamp</p>
+        </div>
+    </body>
+</html>

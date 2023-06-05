@@ -7,7 +7,7 @@
         <title>Home</title>
         <link rel="stylesheet" href="main.css">
         <link rel="manifest" href="manifest.json">
-        <link rel="apple-touch-icon" href="images/test_icon.png">
+        <link rel="apple-touch-icon" href="assets/images/test_icon.png">
     </head>
     <body>
         <!--<script src="index.js"></script>-->
@@ -17,7 +17,7 @@
                     <a class="navbar-link" href="index.html">Home</a>
                 </li>
                 <li class="navbar-item">
-                    <a class="navbar-link" href="game.html">Mathe</a>
+                    <a class="navbar-link" href="game.html?m=mathe">Mathe</a>
                 </li>
                 <li class="navbar-item">
                     <a class="navbar-link" href="">IT</a>
@@ -33,28 +33,31 @@
         <div class="container">
             <h1 class="heading">Jacob's Lernapp</h1>
             <div class="menu">
-                <a id="math" class="card" onclick="getIdFromUrl(this.id);">
-                    <img src="images/math.jpg" alt="Mathe"/>
-                    <p>Mathematik</p>
-                </a>
-                <a>
+                <a href="game.html?mode=mathe">
                     <div class="card">
-                        <img src="images/it.jpg" alt="Internettechnologien"/>
+                        <img src="assets/images/math.jpg" alt="Mathe"/>
+                        <p>Mathematik</p>
+                    </div>
+                </a>
+                <a href="game.html?mode=it">
+                    <div class="card">
+                        <img src="assets/images/it.jpg" alt="Internettechnologien"/>
                         <p>Internettechnologien</p>
                     </div>
                 </a>
-                <a>
+                <a href="game.html?mode=allgemein">
                     <div class="card">
-                        <img src="images/knowledge.jpg" alt="Allgemeinwissen"/>
+                        <img src="assets/images/knowledge.jpg" alt="Allgemeinwissen"/>
                         <p>Allgemeinwissen</p>
                     </div>
                 </a>
-                <a>
+                <a href="#">
                     <div class="card">
-                        <img src="images/basic.jpg" alt="Anderes"/>
+                        <img src="assets/images/basic.jpg" alt="Anderes"/>
                         <p>Anderes</p>
                     </div>
                 </a>
+                
             </div>
         </div>
         <div class="footer">

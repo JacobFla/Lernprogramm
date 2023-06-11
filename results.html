@@ -31,37 +31,31 @@
             </ul>
         </nav>
         <div class="container">
-            <h1 class="heading">Jacob's Lernapp</h1>
-            <div class="menu">
-                <a href="game.html?mode=mathe">
-                    <div class="card">
-                        <img src="assets/images/math.jpg" alt="Mathe"/>
-                        <p>Mathematik</p>
-                    </div>
-                </a>
-                <a href="game.html?mode=it">
-                    <div class="card">
-                        <img src="assets/images/it.jpg" alt="Internettechnologien"/>
-                        <p>Internettechnologien</p>
-                    </div>
-                </a>
-                <a href="game.html?mode=allgemein">
-                    <div class="card">
-                        <img src="assets/images/knowledge.jpg" alt="Allgemeinwissen"/>
-                        <p>Allgemeinwissen</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="card">
-                        <img src="assets/images/basic.jpg" alt="Personen"/>
-                        <p>Anderes</p>
-                    </div>
-                </a>
-                
+            <h1 class="results-heading">Ergebnis:</h1>
+            <div class="results-grid">
+                <div>
+                    <p>Richtig:</p>
+                </div>
+                <div>
+                    <p id="valueRight">4</p>
+                </div>
+                <div>
+                    <p>Falsch:</p>
+                </div>
+                <div>
+                    <p id="valueWrong">2</p>
+                </div>
+            </div>
+            <div class="results-text">
+                <p id="percentage">Insgesamt hast du <b>69%</b> richtig!</p>
+            </div>
+            <div class="next-button-container">
+                <button class="next-button">Erneut spielen</button>
             </div>
         </div>
         <div class="footer">
             <p>© 2023 Jacob Flaskamp</p>
         </div>
+        <script src="results.js"></script>
     </body>
 </html>

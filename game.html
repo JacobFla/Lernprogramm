@@ -37,25 +37,25 @@
                     <a class="navbar-link" href="game.html?mode=noten">Noten</a>
                 </li>
                 <li class="navbar-item">
-                    <a class="navbar-link" href="">Anderes</a>
+                    <a class="navbar-link" href="game.html?mode=personen">Personen</a>
                 </li>
             </ul>
         </nav>
-        <div class="game-container">
-            <h1 id="heading-game" class="heading-game">Mathematik</h1>
+        <div id="game-container" class="game-container">
+            <h1 id="heading-game" class="heading-game">Überschrift</h1>
             <div class="progress-container">
                 <p>Richtig</p>
                 <div class="progressbar-right">
-                    <div></div>
+                    <div id="progressbar-right"></div>
                 </div>
                 <p>Falsch</p>
                 <div class="progressbar-wrong">
-                    <div></div>
+                    <div id="progressbar-wrong"></div>
                 </div>
             </div>
             
             <div class="question">
-                <p id="question">Das hier ist die Fragestellung. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                <p id="question">Das \(x^2\) hier ist die Fragestellung. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
             </div>
             <div class="answer-container">
                 <div class ="answer-letter">
@@ -81,9 +81,16 @@
                 </div>
                 <p id="answer4" class="answer-text">Dies ist eine vierte und letzte Anwortmöglichkeit.</p>
             </div>
-            <div>Das ist ein Element mit Inline-Formel: \(c = \pm\sqrt{a^2 + b^2}\). Rendern als separates Element sieht so aus: $$a' = \begin{pmatrix} a & b \\c & d\end{pmatrix} $$ usw.</div>
+            <div class="next-button-container">
+                <button id="next-button" class="next-button" disabled="true">Nächste Aufgabe</button>
+            </div>
+            
+            <div>
+                Das ist ein Element mit Inline-Formel: \(c = \pm\sqrt{a^2 + b^2}\)
+            </div>
         </div>
         
-        <script src="game.js"></script>
+        <!--<script src="game.js"></script>-->
+        <script src="script.js"></script>
     </body>
 </html>

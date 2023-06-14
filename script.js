@@ -10,8 +10,8 @@ const heading = document.querySelector("#heading-game");
 const progressbarRight = document.querySelector("#progressbar-right");
 const progressbarWrong = document.querySelector("#progressbar-wrong");
 
-const quizLength = 6;
-const idRange = [2, 33];
+const quizLength = 8;
+const idRanges = [[2, 33], [176, 183]];
 const modes = ["mathe", "it", "allgemein", "noten", "personen"];
 var currentID = 2;
 var currentProgress = 0;
@@ -22,60 +22,23 @@ var questionsDone = [];
 //request variables
 const url = "https://irene.informatik.htw-dresden.de:8888/api/quizzes/";
 const file = "assets/questions.json";
-const username = "test@gmail.com";
-const password = "secret";
+const username = "jfla42@gmail.com";
+const password = "supersecretpassword";
 
 document.addEventListener("DOMContentLoaded", function() {
     let model = new Model();
     let presenter = new Presenter(model);
-    let view = new View(presenter);
+    let view = new View(model, presenter);
     presenter.setModelAndView(model, view);
     model.setPresenterAndView(presenter, view);
-
-    model.startGame();
+    presenter.startGame();
 });
 
 //model
 class Model {
-    constructor() {
-
-    }
-
     setPresenterAndView(presenter, view) {
         this.presenter = presenter;
         this.view = view;
-    }
-
-    startGame() {
-        if (gamemode === "personen") {
-            this.getRemote(2).then(data => {
-                console.log(data);
-                
-                
-
-            });
-        }
-        else if (modes.includes(gamemode)) {
-            this.getLocal().then(data => {
-                questions = data[gamemode];
-                let q = this.getRandomQuestion();
-                q["l"] = this.presenter.mixOptions(q["l"]);
-                this.view.fillQuestion([q["a"], q["l"]]);
-            });
-        }
-        else {
-            console.log("Error: gamemode not found");
-        }
-    }
-
-    //get random question from questions array
-    //only for local questions
-    getRandomQuestion() {
-        let randomID = Math.floor(Math.random() * questions.length);
-        let randomQuestion = questions[randomID];
-        questions.splice(randomID, 1);
-        questionsDone.push(randomQuestion);
-        return randomQuestion;
     }
 
     async getLocal() {
@@ -92,8 +55,16 @@ class Model {
         });
     }
 
+    checkAnswerLocal (answer) {
+        if (answer === currentRight) {
+            this.presenter.success = true;
+        }
+        else {
+            this.presenter.success = false;
+        }
+    }
+
     async getRemote(id) {
-        let q;
         let headers = new Headers();
         headers.append("Authorization", "Basic " + btoa(username + ":" + password));
         return fetch(url+id, {
@@ -113,14 +84,42 @@ class Model {
             console.log(error);
         });
     }
+
+    async checkAnswerRemote (id, answer) {
+        let headers = new Headers();
+        headers.append("Authorization", "Basic " + btoa(username + ":" + password));
+        headers.append("Content-Type", "application/json");
+        console.log("id: "+id+" answer: " + answer);
+
+        return fetch(url+id+"/solve", {
+            method: "post",
+            mode: "cors",
+            headers: headers,
+            body: "["+JSON.stringify(answer-1)+"]"
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            else {
+                throw new Error("Error: " + response.status);
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
 }
 
 //view
 class View {
-    constructor(presenter) {
-        this.presenter = presenter;  // Presenter
+    constructor(model, presenter) {
+        this.model = model;
+        this.presenter = presenter;
         this.setHandler();
         this.selectable = true;
+        this.rightCounter = 0;
+        this.wrongCounter = 0;
     }
 
     setHandler() {
@@ -128,12 +127,33 @@ class View {
         options[1].addEventListener("click", this.selectAnswer.bind(this, 2), false);
         options[2].addEventListener("click", this.selectAnswer.bind(this, 3), false);
         options[3].addEventListener("click", this.selectAnswer.bind(this, 4), false);
-
-        nextButton.addEventListener("click", this.next.bind(this), false);
+        nextButton.addEventListener("click", this.nextButtonPress.bind(this), false);
     }
 
-    next () {
-        this.presenter.nextButtonPress();
+    nextButtonPress() {
+        if (currentProgress >= quizLength) {
+            window.location.href = "results.html?mode="+gamemode+"&r="+this.rightCounter+"&w="+this.wrongCounter;
+            return;
+        }
+        nextButton.disabled = true;
+        this.selectable = true;
+        for (let i = 0; i < options.length; i++) {
+            options[i].style.backgroundColor = "lightgoldenrodyellow";
+            options[i].style.cursor = "pointer";
+        }
+        this.presenter.nextQuestion();
+    }
+
+    setHeading() {
+        let headings = ["Mathematik", "Internettechnologien", "Allgemeinwissen", "Noten", "Personen"];
+
+        for (let i = 0; i < modes.length; i++) {
+            if (gamemode === modes[i]) {
+                heading.textContent = headings[i];
+                return;
+            }
+        }
+        heading.textContent = "Fehler: Spielmodus nicht gefunden";
     }
 
     async selectAnswer(answer) {
@@ -143,12 +163,18 @@ class View {
         }
         currentProgress++;
         this.selectable = false;
-        if (gamemode === "personen") {
-            await this.presenter.checkAnswerRemote(currentID, answer);
+        if (gamemode === "personen" || gamemode === "it") {
+            await this.model.checkAnswerRemote(currentID, answer).then(data => {
+                if (data["success"]) {
+                    this.presenter.success = true;
+                }
+                else {
+                    this.presenter.success = false;
+                }
+            });
         }
         else {
-            console.log(answer);
-            this.presenter.checkAnswerLocal(answer);
+            this.model.checkAnswerLocal(answer);
         }
         
         if (this.presenter.success) {
@@ -157,8 +183,21 @@ class View {
         else {
             options[answer-1].style.backgroundColor = "salmon";
         }
-        this.presenter.setProgress();
+        this.setProgress();
         this.endQuestion();
+    }
+
+    setProgress() {
+        if (this.presenter.success) {
+            this.rightCounter++;
+        }
+        else {
+            this.wrongCounter++;
+        }
+        let rightPercentage = this.rightCounter / quizLength * 100;
+        let wrongPercentage = this.wrongCounter / quizLength * 100;
+        progressbarRight.style.width = rightPercentage + "%";
+        progressbarWrong.style.width = wrongPercentage + "%";
     }
 
     fillQuestion(q) {
@@ -195,8 +234,6 @@ class Presenter {
     constructor(model) {
         this.model = model;
         this.success = false;
-        this.rightCounter = 0;
-        this.wrongCounter = 0;
     }
 
     setModelAndView(model, view) {
@@ -205,88 +242,64 @@ class Presenter {
     }
 
     async startGame() {
-        await this.model.getQuestionsAsync(idRange).then(data => {});
-        //this.view.fillQuestion();
-    }
-
-    nextButtonPress() {
-        console.log("next: r="+this.rightCounter + "w=" + this.wrongCounter);
-        if (currentProgress >= quizLength) {
-            window.location.href = "results.html?r="+this.rightCounter+"&w="+this.wrongCounter;
-            return;
+        this.view.setHeading();
+        if (gamemode === "personen") {
+            for (let i = idRanges[0][0]; i <= idRanges[0][1]; i++) {
+                questions.push(i);
+            }
         }
-        console.log("next question");
-        nextButton.disabled = true;
-        this.view.selectable = true;
-        for (let i = 0; i < options.length; i++) {
-            options[i].style.backgroundColor = "lightgoldenrodyellow";
-            options[i].style.cursor = "pointer";
+        else if (gamemode === "it") {
+            for (let i = idRanges[1][0]; i <= idRanges[1][1]; i++) {
+                questions.push(i);
+            }
         }
-
-        //TODO nextQuestion
-    }
-    
-    setProgress() {
-        if (this.success) {
-            this.rightCounter++;
-            console.log(this.rightCounter);
+        else if (modes.includes(gamemode)) {
+            await this.model.getLocal().then(data => {
+                questions = data[gamemode];
+            });
         }
         else {
-            this.wrongCounter++;
+            console.log("Error: gamemode not found");
         }
-        let rightPercentage = this.rightCounter / quizLength * 100;
-        let wrongPercentage = this.wrongCounter / quizLength * 100;
-        progressbarRight.style.width = rightPercentage + "%";
-        progressbarWrong.style.width = wrongPercentage + "%";
+        this.nextQuestion();
+    }
+
+    //get random question from questions array
+    //only for local questions
+    getRandomQuestion() {
+        let randomID = Math.floor(Math.random() * questions.length);
+        let randomQuestion = questions[randomID];
+        currentID = randomQuestion;
+        questions.splice(randomID, 1);
+        questionsDone.push(randomQuestion);
+    }
+
+    nextQuestion() {
+        this.getRandomQuestion();
+        if (gamemode === "personen" || gamemode === "it") {
+            this.model.getRemote(currentID).then(data => {
+                this.view.fillQuestion([data["text"], data["options"]]);
+            });
+        }
+        else {
+            currentID["l"] = this.mixOptions(currentID["l"]);
+            this.view.fillQuestion([currentID["a"], currentID["l"]]);
+        }
     }
 
     mixOptions(options) {
         let right = options[0];
-
         //fisher-yates shuffle
-        console.log("pre shuffle: "+options);
         for (let i = options.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [options[i], options[j]] = [options[j], options[i]];
         }
-        console.log("post shuffle: "+options);
 
         for (let i = 0; i < options.length; i++) {
             if (options[i] === right) {
                 currentRight = i+1;
             }
         }
-        console.log("rightAnswer: "+currentRight);
         return options;
-    }
-
-    checkAnswerLocal (answer) {
-        if (answer === currentRight) {
-            this.success = true;
-        }
-        else {
-            this.success = false;
-        }
-    }
-
-    async checkAnswerRemote (id, answer) {
-        let headers = new Headers();
-        headers.append("Authorization", "Basic " + btoa(username + ":" + password));
-        headers.append("Content-Type", "application/json");
-        let response = await fetch(url+id+"/solve", {
-            method: "post",
-            mode: "cors",
-            headers: headers,
-            body: "["+JSON.stringify(answer)+"]"
-        });
-        let solution = await response.json().then(data => {
-            console.log(data);
-            console.log(data["success"]);
-            this.success = data["success"];
-            return data;
-        })
-        .catch(error => {
-            console.log(error);
-        });
     }
 }

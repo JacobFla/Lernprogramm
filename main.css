@@ -71,11 +71,15 @@ img {
     color: salmon;
 }
 
+.container {
+    padding-top: 2rem;
+}
+
 /* desktop screens */
 @media only screen and (min-width: 600px) {
     .navbar {
         width: 5.5rem;
-        height: 100vh;
+        height: 100%;
     }
 
     .navbar-link {
@@ -121,8 +125,8 @@ img {
 
 .menu {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(202px, 1fr));
-    justify-content: space-evenly;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, 202px);
     gap: 20px;
     padding: 20px;
 }
@@ -174,27 +178,25 @@ img {
 }
 
 .progressbar-right {
-    background-color: black;
+    border-style: solid;
     border-radius: 13px;
-    padding: 3px;
 }
 
 .progressbar-right>div {
     background-color: lightgreen;
-    width: 75%;
+    width: 0%;
     height: 20px;
     border-radius: 10px;
 }
 
 .progressbar-wrong {
-    background-color: black;
+    border-style: solid;
     border-radius: 13px;
-    padding: 3px;
 }
 
 .progressbar-wrong>div {
     background-color: lightcoral;
-    width: 40%;
+    width: 0%;
     height: 20px;
     border-radius: 10px;
 }
@@ -218,7 +220,7 @@ img {
     border-color: black;	
     border-width: 2px;
     background-color: var(--accent-primary);
-    padding-left: 10px;
+    padding: 10px;
     margin-bottom: 20px;
     font-size: 18px;
     font-weight: bold;
@@ -235,8 +237,10 @@ img {
 }
 
 .answer-container:hover {
-    background-color: aliceblue !important;
     cursor: pointer;
+    .answer-letter {
+        background-color: aliceblue !important;
+    }
 }
 
 .answer-letter {
@@ -250,8 +254,7 @@ img {
 }
 
 .answer-text {
-    padding: 5px;
-    padding-left: 10px;
+    padding: 10px;
 }
 
 .next-button-container {
@@ -283,22 +286,17 @@ img {
     cursor: not-allowed;
 }
 
-.heading {
-    font-size: 50px;
+.heading-home {
     text-align: center;
-    color: white;
-    text-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
-    margin-bottom: 1rem;
-}
-
-.heading-game {
-    font-size: 50px;
+    font-size: 60px;
     margin-bottom: 2rem;
 }
 
-.results-heading {
+.heading {
+    text-align: center;
     font-size: 50px;
-    margin: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .results-grid {
@@ -316,7 +314,7 @@ img {
 
 .results-text {
     display: flex;
-    margin-top: 5rem;
+    margin: 2rem;
     font-size: 26px;
     justify-content: center;
 }

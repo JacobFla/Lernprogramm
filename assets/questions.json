@@ -21,12 +21,12 @@
     ],
   "allgemein": [
     {"a":"Wie heißt der höchste Berg der Erde?", "l":["Mount Everest","K2","Matterhorn","Zugspitze"]},
-    {"a":"Welches Land ist flächenmäßig das größte der Welt?", "l":["Russland","China","USA","Canada"]},
-    {"a":"Der wievielte Planete ist die Erde in unserem Sonnensystem?", "l":["der Dritte", "der Erste", "Der Zweite", "Der Vierte"]},
-    {"a":"Welches Tier ist das größte Säugetier der Welt?", "l":["Blauwal","Elefant","Giraffe","Grizzlybär"]},
+    {"a":"Welches Land ist flächenmäßig das größte der Erde?", "l":["Russland","China","USA","Canada"]},
+    {"a":"Der wievielte Planet ist die Erde in unserem Sonnensystem?", "l":["Der Dritte", "Der Erste", "Der Zweite", "Der Vierte"]},
+    {"a":"Welches Tier ist das größte Säugetier der Erde?", "l":["Blauwal","Elefant","Giraffe","Grizzlybär"]},
     {"a":"Wie viele Nachbarländer hat Deutschland?", "l":["9", "6", "8", "10"]},
     {"a":"In welchem Land leben die meisten Menschen?", "l":["China","Indien","USA","Russland"]},
-    {"a":"Welches Organ des menschlichen Körpers braucht am meisten Energie?", "l":["Das Gehirn","Das Herz","Die Leber","Die Lunge"]},
+    {"a":"Welches Organ des menschlichen Körpers benötigt die meiste Energie?", "l":["Das Gehirn","Das Herz","Die Leber","Die Lunge"]},
     {"a":"In welchem Jahr war die deutsche Wiedervereinigung?", "l":["1990", "1989", "1992", "1987"]}
     ],
   "noten": [

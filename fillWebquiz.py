@@ -10,14 +10,14 @@ headers = {
 }
 
 dataArray = [
-    {"title":"IT", "text":"Welche Authentifizierung bietet HTTP", "options":["OTP","OAuth","2-Faktor-Authentifizierung","Digest Access Authentication"], "answer": [3]},
-    {"title":"IT", "text":"Welches Transportprotokoll eignet sich für zeitkritische Übertragungen", "options":["TCP","HTTP","UDP","Fast Retransmit"], "answer": [2]},
-    {"title":"IT", "text":"Wofür steht CSS?", "options":["Computer Style Sheets", "Cascading Style Sheets","Computer Supported Styling","Creative Style Sheets"], "answer": [1]},
-    {"title":"IT", "text":"Welche Methode wird in HTTP verwendet, um Daten an den Server zu senden?", "options":["POST","GET","PUT","DELETE"], "answer": [0]},
-    {"title":"IT", "text":"Welche Programmiersprache wird häufig für die serverseitige Webentwicklung verwendet?", "options":["Python","JavaScript","Java","C#"], "answer": [1]},
-    {"title":"IT", "text":"Welche HTTP-Statuscode wird verwendet, um anzuzeigen, dass eine Ressource nicht gefunden wurde?", "options":["200","400","402","404"], "answer": [3]},
-    {"title":"IT", "text":"Was ist der Unterschied zwischen HTTP und HTTPS?", "options":["HTTP ist schneller als HTTPS","HTTPS ist schneller als HTTP","HTTP ermöglicht eine sichere Verbindung zu Websites","HTTPS verschlüsselt die Datenübertragung"], "answer": [3]},
-    {"title":"IT", "text":"Was ist der Hauptzweck von JSON?", "options":["Datenübertragung und -speicherung","Sortieren von Daten","Website-Styling und -Design","Datenbankabfragen"], "answer": [0]}
+    {"title":"Personen", "text":"Wann wurde Albert Einstein geboren?", "options":["1905","1879","1925","1839"], "answer": [1]},
+    {"title":"Personen", "text":"Wann wurde Isaac Newton geboren?", "options":["1643","1479","1225","1750"], "answer": [0]},
+    {"title":"Personen", "text":"Wann wurde Marie Curie geboren?", "options":["1829","1802","1915","1867"], "answer": [3]},
+    {"title":"Personen", "text":"Wann wurde Nikola Tesla geboren?", "options":["1856","1899","1925","1803"], "answer": [0]},
+    {"title":"Personen", "text":"Wann wurde Konrad Zuse geboren?", "options":["1897","1929","1910","1878"], "answer": [2]},
+    {"title":"Personen", "text":"Wann wurde Alan Turing geboren?", "options":["1875","1921","1890","1912"], "answer": [3]},
+    {"title":"Personen", "text":"Wann wurde Charles Darwin geboren?", "options":["1771","1809","1841","1711"], "answer": [1]},
+    {"title":"Personen", "text":"Wann wurde Stephen Hawking geboren?", "options":["1898","1959","1942","1921"], "answer": [2]}
 ]
 
 for i in range(0, len(dataArray)):

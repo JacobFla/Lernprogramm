@@ -5,13 +5,14 @@ const params = new URLSearchParams(window.location.search);
 const gamemode = params.get("mode");
 const questionField = document.querySelector("#question");
 const options = document.querySelectorAll("#game-container > .answer-container");
+const counter = document.querySelector("#counter");
 const nextButton = document.querySelector("#next-button");
 const heading = document.querySelector("#heading-game");
 const progressbarRight = document.querySelector("#progressbar-right");
 const progressbarWrong = document.querySelector("#progressbar-wrong");
 
 const quizLength = 8;
-const idRanges = [[2, 33], [176, 183]];
+const idRanges = [[203, 210]];
 const modes = ["mathe", "it", "allgemein", "noten", "personen"];
 var currentID = 2;
 var currentProgress = 0;
@@ -163,7 +164,7 @@ class View {
         }
         currentProgress++;
         this.selectable = false;
-        if (gamemode === "personen" || gamemode === "it") {
+        if (gamemode === "personen") {
             await this.model.checkAnswerRemote(currentID, answer).then(data => {
                 if (data["success"]) {
                     this.presenter.success = true;
@@ -198,6 +199,11 @@ class View {
         let wrongPercentage = this.wrongCounter / quizLength * 100;
         progressbarRight.style.width = rightPercentage + "%";
         progressbarWrong.style.width = wrongPercentage + "%";
+        this.setCounter();
+    }
+
+    setCounter() {
+        counter.textContent = (this.rightCounter + this.wrongCounter) + " / " + quizLength;
     }
 
     fillQuestion(q) {
@@ -243,13 +249,9 @@ class Presenter {
 
     async startGame() {
         this.view.setHeading();
+        this.view.setCounter();
         if (gamemode === "personen") {
             for (let i = idRanges[0][0]; i <= idRanges[0][1]; i++) {
-                questions.push(i);
-            }
-        }
-        else if (gamemode === "it") {
-            for (let i = idRanges[1][0]; i <= idRanges[1][1]; i++) {
                 questions.push(i);
             }
         }
@@ -276,7 +278,7 @@ class Presenter {
 
     nextQuestion() {
         this.getRandomQuestion();
-        if (gamemode === "personen" || gamemode === "it") {
+        if (gamemode === "personen") {
             this.model.getRemote(currentID).then(data => {
                 this.view.fillQuestion([data["text"], data["options"]]);
             });

@@ -19,7 +19,7 @@ const password = "supersecretpassword";
 
 const quizLength = 8;
 const idRanges = [[203, 210]];
-const modes = ["mathe", "it", "allgemein", "noten", "personen"];
+const modes = ["mathe", "it", "allgemein", "personen"];
 
 var currentID = 2;
 var currentProgress = 0;

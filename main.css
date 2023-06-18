@@ -23,6 +23,7 @@ body {
 .footer {
     position: fixed;
     bottom: 0;
+    padding: 0.25rem;
     width: 100%;
     text-align: center;
     background-color: var(--background-primary);
@@ -80,22 +81,27 @@ img {
 /* desktop screens only*/
 @media only screen and (min-width: 600px) {
     .navbar {
-        width: 5.5rem;
+        width: 7rem;
         height: 100%;
     }
 
     .navbar-link {
-        padding: 0.5rem;
+        padding-left: 1rem;
+        padding-top: 0.5rem;
         height: 3rem;
     }
 
     .container {
-        margin-left: 5.5rem;
+        margin-left: 7rem;
     }
 
     .game-container {
         margin-top: 0;
-        margin-left: 5rem;
+        margin-left: 7rem;
+    }
+
+    .results-grid {
+        width: 50%;
     }
 }
 
@@ -130,6 +136,10 @@ img {
         grid-template-columns: repeat(auto-fit, 22px);
         gap: 20px;
         padding: 20px;
+    }
+
+    .results-grid {
+        width: 70%;
     }
 }
 
@@ -262,7 +272,7 @@ img {
     font-weight: bold;
     padding: 10px;
     background-color: var(--accent-primary);
-    border-radius: 10px 0 0 10px;
+    border-radius: 8px 0 0 8px;
     border-width: 0 2px 0 0;
     border-style: solid;
 }
@@ -319,8 +329,14 @@ img {
 
 /* results */
 
+.container-results {
+    display: flex;
+    justify-content: center;
+}
+
 .results-grid {
     display: grid;
+    justify-content: center;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     padding: 10px;
@@ -336,5 +352,6 @@ img {
     display: flex;
     margin: 2rem;
     font-size: 26px;
+    text-align: center;
     justify-content: center;
 }

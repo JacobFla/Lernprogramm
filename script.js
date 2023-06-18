@@ -11,26 +11,28 @@ const heading = document.querySelector("#heading-game");
 const progressbarRight = document.querySelector("#progressbar-right");
 const progressbarWrong = document.querySelector("#progressbar-wrong");
 
-const quizLength = 8;
-const idRanges = [[203, 210]];
-const modes = ["mathe", "it", "allgemein", "noten", "personen"];
-var currentID = 2;
-var currentProgress = 0;
-var currentRight = "";
-var questions = [];
-var questionsDone = [];
-
 //request variables
 const url = "https://irene.informatik.htw-dresden.de:8888/api/quizzes/";
 const file = "assets/questions.json";
 const username = "jfla42@gmail.com";
 const password = "supersecretpassword";
 
+const quizLength = 8;
+const idRanges = [[203, 210]];
+const modes = ["mathe", "it", "allgemein", "noten", "personen"];
+
+var currentID = 2;
+var currentProgress = 0;
+var currentRight = "";
+var questions = [];
+var questionsDone = [];
+
+
 document.addEventListener("DOMContentLoaded", function() {
     let model = new Model();
     let presenter = new Presenter(model);
     let view = new View(model, presenter);
-    presenter.setModelAndView(model, view);
+    presenter.setView(view);
     model.setPresenterAndView(presenter, view);
     presenter.startGame();
 });
@@ -42,6 +44,7 @@ class Model {
         this.view = view;
     }
 
+    //get questions from local file
     async getLocal() {
         return fetch(file).then(response => {
             if (response.ok) {
@@ -65,6 +68,7 @@ class Model {
         }
     }
 
+    //request question from remote server
     async getRemote(id) {
         let headers = new Headers();
         headers.append("Authorization", "Basic " + btoa(username + ":" + password));
@@ -86,29 +90,39 @@ class Model {
         });
     }
 
-    async checkAnswerRemote (id, answer) {
+    //send multiple requests to external sever
+    //finds correct answer to server question
+    async getAnswersRemote (id) {
+        let bodies = [];
         let headers = new Headers();
         headers.append("Authorization", "Basic " + btoa(username + ":" + password));
         headers.append("Content-Type", "application/json");
-        console.log("id: "+id+" answer: " + answer);
 
-        return fetch(url+id+"/solve", {
-            method: "post",
-            mode: "cors",
-            headers: headers,
-            body: "["+JSON.stringify(answer-1)+"]"
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
+        for (let i = 0; i < options.length; i++) {
+            bodies.push("["+JSON.stringify(i)+"]");
+        }
+
+        try {
+            let responses = await Promise.all(bodies.map(async body => {
+                let response = await fetch(url+id+"/solve", {
+                    method: "post",
+                    mode: "cors",
+                    headers: headers,
+                    body: body
+                });
+                return response;
+            }));
+
+            for (let i = 0; i < responses.length; i++) {
+                let data = await responses[i].json();
+                if (data["success"]) {
+                    currentRight = i+1;
+                }
             }
-            else {
-                throw new Error("Error: " + response.status);
-            }
-        })
-        .catch(error => {
+        }
+        catch (error) {
             console.log(error);
-        });
+        }
     }
 }
 
@@ -117,13 +131,13 @@ class View {
     constructor(model, presenter) {
         this.model = model;
         this.presenter = presenter;
-        this.setHandler();
+        this.setHandlers();
         this.selectable = true;
         this.rightCounter = 0;
         this.wrongCounter = 0;
     }
 
-    setHandler() {
+    setHandlers() {
         options[0].addEventListener("click", this.selectAnswer.bind(this, 1), false);
         options[1].addEventListener("click", this.selectAnswer.bind(this, 2), false);
         options[2].addEventListener("click", this.selectAnswer.bind(this, 3), false);
@@ -131,6 +145,7 @@ class View {
         nextButton.addEventListener("click", this.nextButtonPress.bind(this), false);
     }
 
+    //reset question states of buttons or redirect to results screen
     nextButtonPress() {
         if (currentProgress >= quizLength) {
             window.location.href = "results.html?mode="+gamemode+"&r="+this.rightCounter+"&w="+this.wrongCounter;
@@ -157,7 +172,8 @@ class View {
         heading.textContent = "Fehler: Spielmodus nicht gefunden";
     }
 
-    async selectAnswer(answer) {
+    //triggered when user selects an answer
+    selectAnswer(answer) {
         if (!this.selectable) {
             console.log("not selectable");
             return;
@@ -165,14 +181,12 @@ class View {
         currentProgress++;
         this.selectable = false;
         if (gamemode === "personen") {
-            await this.model.checkAnswerRemote(currentID, answer).then(data => {
-                if (data["success"]) {
-                    this.presenter.success = true;
-                }
-                else {
-                    this.presenter.success = false;
-                }
-            });
+            if (answer === currentRight) {
+                this.presenter.success = true;
+            }
+            else {
+                this.presenter.success = false;
+            }
         }
         else {
             this.model.checkAnswerLocal(answer);
@@ -183,11 +197,13 @@ class View {
         }
         else {
             options[answer-1].style.backgroundColor = "salmon";
+            options[currentRight-1].style.backgroundColor = "lightgreen";
         }
         this.setProgress();
         this.endQuestion();
     }
 
+    //updates progress bar
     setProgress() {
         if (this.presenter.success) {
             this.rightCounter++;
@@ -202,10 +218,12 @@ class View {
         this.setCounter();
     }
 
+    //updates counter above next button
     setCounter() {
         counter.textContent = (this.rightCounter + this.wrongCounter) + " / " + quizLength;
     }
 
+    //fills in question and answer options
     fillQuestion(q) {
         if (gamemode === "mathe") {
             katex.render(q[0], questionField, {throwOnError: false});
@@ -221,7 +239,7 @@ class View {
         }
     }
 
-    //block answer selection, show next button
+    //block answer selection, shows next button
     endQuestion() {
         nextButton.disabled = false;
         if (currentProgress >= quizLength) {
@@ -242,11 +260,11 @@ class Presenter {
         this.success = false;
     }
 
-    setModelAndView(model, view) {
-        this.model = model;
+    setView(view) {
         this.view = view;
     }
 
+    //initiates game for selected gamemode
     async startGame() {
         this.view.setHeading();
         this.view.setCounter();
@@ -276,9 +294,12 @@ class Presenter {
         questionsDone.push(randomQuestion);
     }
 
+    //gets triggered when next-button is pressed
+    //gets new question to fill in
     nextQuestion() {
         this.getRandomQuestion();
         if (gamemode === "personen") {
+            this.model.getAnswersRemote(currentID);
             this.model.getRemote(currentID).then(data => {
                 this.view.fillQuestion([data["text"], data["options"]]);
             });
@@ -289,6 +310,8 @@ class Presenter {
         }
     }
 
+    //mixes the array
+    //only for local questions
     mixOptions(options) {
         let right = options[0];
         //fisher-yates shuffle

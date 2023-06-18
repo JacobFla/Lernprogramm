@@ -15,18 +15,18 @@
     {"a":"Wofür steht CSS?", "l":["Cascading Style Sheets", "Computer Style Sheets", "Computer Supported Styling", "Creative Style Sheets"]},
     {"a":"Welche Methode wird in HTTP verwendet, um Daten an den Server zu senden?", "l":["POST","GET","PUT","DELETE"]},
     {"a":"Welche Programmiersprache wird häufig für die serverseitige Webentwicklung verwendet?", "l":["JavaScript","Python","Java","C#"]},
-    {"a":"Welche HTTP-Statuscode wird verwendet, um anzuzeigen, dass eine Ressource nicht gefunden wurde?", "l":["404","200","400","402"]},
+    {"a":"Welcher HTTP-Statuscode wird verwendet, um anzuzeigen, dass eine Ressource nicht gefunden wurde?", "l":["404","200","400","402"]},
     {"a":"Was ist der Unterschied zwischen HTTP und HTTPS?", "l":["HTTPS verschlüsselt die Datenübertragung, HTTP nicht","HTTP verwendet den Port 80, HTTPS den Port 443","HTTPS ist schneller als HTTP","HTTP ermöglicht die Verbindung zu sicheren Websites"]},
     {"a":"Was ist der Hauptzweck von JSON?", "l":["Datenübertragung und -speicherung","Audio- und Videobearbeitung","Website-Styling und -Design","Datenbankabfragen"]}
     ],
   "allgemein": [
     {"a":"Wie heißt der höchste Berg der Erde?", "l":["Mount Everest","K2","Matterhorn","Zugspitze"]},
     {"a":"Welches Land ist flächenmäßig das größte der Erde?", "l":["Russland","China","USA","Canada"]},
-    {"a":"Der wievielte Planet ist die Erde in unserem Sonnensystem?", "l":["Der Dritte", "Der Erste", "Der Zweite", "Der Vierte"]},
+    {"a":"Der wievielte Planet ist die Erde in unserem Sonnensystem?", "l":["der Dritte", "der Erste", "der Zweite", "der Vierte"]},
     {"a":"Welches Tier ist das größte Säugetier der Erde?", "l":["Blauwal","Elefant","Giraffe","Grizzlybär"]},
     {"a":"Wie viele Nachbarländer hat Deutschland?", "l":["9", "6", "8", "10"]},
-    {"a":"In welchem Land leben die meisten Menschen?", "l":["China","Indien","USA","Russland"]},
-    {"a":"Welches Organ des menschlichen Körpers benötigt die meiste Energie?", "l":["Das Gehirn","Das Herz","Die Leber","Die Lunge"]},
+    {"a":"In welchem Land leben die meisten Menschen?", "l":["Indien","China","USA","Russland"]},
+    {"a":"Welches Organ des menschlichen Körpers benötigt die meiste Energie?", "l":["das Gehirn","das Herz","die Leber","die Lunge"]},
     {"a":"In welchem Jahr war die deutsche Wiedervereinigung?", "l":["1990", "1989", "1992", "1987"]}
     ],
   "noten": [
